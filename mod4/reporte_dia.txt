@@ -1,0 +1,11 @@
+UNIVERSIDAD NACIONAL ROSARIO CASTELLANOS - UNRC
+REPORTE DIARIO DE VISITANTES
+============================================
+Registro 1
+ID: 12
+Nombre: Ana
+Hora de entrada: 11:00 hrs
+Tiempo de uso: 45 minutos
+Nivel de estudio: Universidad
+Equipo asignado: 3
+--------------------------------------------
