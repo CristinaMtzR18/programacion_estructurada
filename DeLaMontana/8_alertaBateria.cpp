@@ -16,6 +16,5 @@ int main() {
     cin >> bateria;
 
     alertaBateria(bateria);
-
     return 0;
 }

@@ -10,8 +10,11 @@ void intentarConexion(int intentos) {
 }
 
 int main() {
+    int intentos;
 
-    intentarConexion(3);
+    cout << "Ingrese cantidad de intentos: ";
+    cin >> intentos;
+    intentarConexion(intentos);
 
     return 0;
 }
