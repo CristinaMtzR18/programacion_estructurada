@@ -1,0 +1,345 @@
+<!DOCTYPE html>
+<html lang="es">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Guía Interactiva: Actividad Integradora SIG-Conecta</title>
+    <script src="https://cdn.tailwindcss.com"></script>
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css">
+    <style>
+        @import url('https://fonts.googleapis.com/css2?family=Inter:wght@300;400;500;600;700&display=swap');
+        body {
+            font-family: 'Inter', sans-serif;
+            background-color: #f3f4f6;
+        }
+        .phase-btn.active {
+            background-color: #4f46e5;
+            color: white;
+            border-color: #4f46e5;
+            box-shadow: 0 4px 6px -1px rgba(79, 70, 229, 0.5);
+        }
+        .phase-btn.active .icon-bg {
+            background-color: rgba(255, 255, 255, 0.2);
+        }
+        .custom-scrollbar::-webkit-scrollbar {
+            width: 6px;
+        }
+        .custom-scrollbar::-webkit-scrollbar-track {
+            background: #f1f1f1; 
+            border-radius: 4px;
+        }
+        .custom-scrollbar::-webkit-scrollbar-thumb {
+            background: #cbd5e1; 
+            border-radius: 4px;
+        }
+        .custom-scrollbar::-webkit-scrollbar-thumb:hover {
+            background: #94a3b8; 
+        }
+        
+        /* Checkbox animation */
+        .task-checkbox:checked + div {
+            text-decoration: line-through;
+            color: #9ca3af;
+        }
+    </style>
+</head>
+<body class="h-screen flex flex-col overflow-hidden">
+
+    <!-- Header -->
+    <header class="bg-white shadow-sm z-10 py-4 px-6 md:px-10 flex items-center justify-between">
+        <div class="flex items-center gap-3">
+            <div class="bg-indigo-600 text-white p-2 rounded-lg">
+                <i class="fa-solid fa-laptop-code text-xl"></i>
+            </div>
+            <div>
+                <h1 class="text-xl font-bold text-gray-800">Proyecto: SIG-Conecta</h1>
+                <p class="text-xs text-gray-500">Gestión de equipos (C++) - San Pedro de la Montaña</p>
+            </div>
+        </div>
+        <div class="hidden md:flex items-center gap-4 text-sm font-medium text-gray-600">
+            <div class="flex items-center gap-2">
+                <span id="progress-text">0% Completado</span>
+                <div class="w-32 bg-gray-200 rounded-full h-2.5">
+                    <div id="progress-bar" class="bg-green-500 h-2.5 rounded-full transition-all duration-500" style="width: 0%"></div>
+                </div>
+            </div>
+        </div>
+    </header>
+
+    <!-- Main Content -->
+    <main class="flex-1 flex flex-col md:flex-row overflow-hidden max-w-7xl w-full mx-auto">
+        
+        <!-- Sidebar Navigation -->
+        <aside class="w-full md:w-80 bg-white border-r border-gray-200 overflow-y-auto custom-scrollbar flex-shrink-0">
+            <div class="p-5">
+                <h2 class="text-xs uppercase font-bold text-gray-400 tracking-wider mb-4">Fases de Desarrollo</h2>
+                <div class="flex flex-col gap-3" id="nav-container">
+                    <!-- Nav items injected by JS -->
+                </div>
+            </div>
+        </aside>
+
+        <!-- Content Area -->
+        <section class="flex-1 bg-gray-50 overflow-y-auto custom-scrollbar p-6 md:p-10 relative">
+            
+            <div class="max-w-3xl mx-auto bg-white rounded-2xl shadow-sm border border-gray-100 overflow-hidden" id="content-card">
+                
+                <!-- Header Banner of the Phase -->
+                <div class="h-32 text-white p-8 flex items-end relative overflow-hidden transition-colors duration-500" id="phase-banner">
+                    <div class="absolute top-0 right-0 p-8 opacity-20 text-8xl transform translate-x-4 -translate-y-4">
+                        <i id="phase-banner-icon" class="fa-solid fa-map"></i>
+                    </div>
+                    <div class="relative z-10 w-full flex justify-between items-end">
+                        <div>
+                            <span class="bg-white/20 text-white text-xs font-bold px-2 py-1 rounded backdrop-blur-sm mb-2 inline-block">Fase del SDLC</span>
+                            <h2 class="text-3xl font-bold" id="phase-title">1. Fase de planeación</h2>
+                        </div>
+                    </div>
+                </div>
+
+                <div class="p-8">
+                    <!-- Theory Section (From PDF 1) -->
+                    <div class="mb-8 bg-blue-50 border-l-4 border-blue-500 p-4 rounded-r-lg">
+                        <h3 class="text-sm font-bold text-blue-800 flex items-center gap-2 mb-2">
+                            <i class="fa-solid fa-book-open"></i> Teoría (Lo que significa esta fase)
+                        </h3>
+                        <p class="text-blue-700 text-sm" id="phase-theory">
+                            Definir alcance, objetivos, recursos necesarios y cronograma de trabajo.
+                        </p>
+                    </div>
+
+                    <h3 class="text-lg font-bold text-gray-800 border-b pb-2 mb-4">Tareas de tu Actividad Integradora</h3>
+                    
+                    <!-- Checklist Section (From PDF 2) -->
+                    <div class="space-y-3" id="tasks-container">
+                        <!-- Tasks injected by JS -->
+                    </div>
+
+                    <!-- Navigation footer -->
+                    <div class="mt-10 pt-6 border-t border-gray-100 flex justify-between">
+                        <button id="btn-prev" class="px-4 py-2 text-sm font-medium text-gray-600 hover:text-indigo-600 hover:bg-indigo-50 rounded-lg transition-colors invisible">
+                            <i class="fa-solid fa-arrow-left mr-2"></i> Fase Anterior
+                        </button>
+                        <button id="btn-next" class="px-4 py-2 text-sm font-medium text-white bg-indigo-600 hover:bg-indigo-700 rounded-lg transition-colors shadow-sm">
+                            Siguiente Fase <i class="fa-solid fa-arrow-right ml-2"></i>
+                        </button>
+                    </div>
+                </div>
+            </div>
+
+            <!-- Context Info Bubble -->
+            <div class="max-w-3xl mx-auto mt-6 bg-indigo-50 border border-indigo-100 rounded-xl p-5 flex gap-4 text-sm text-indigo-900">
+                <i class="fa-solid fa-circle-info text-indigo-500 text-xl mt-0.5"></i>
+                <p><strong>Contexto del problema:</strong> La comunidad de San Pedro de la Montaña tiene baja conectividad. Tu sistema en <strong>C++</strong> debe funcionar <em>offline</em>, usar la memoria eficientemente (Arreglos/Estructuras) y guardar datos de forma persistente en un archivo local de texto.</p>
+            </div>
+
+        </section>
+    </main>
+
+    <script>
+        // Data derived from combining both PDFs
+        const phasesData = [
+            {
+                id: 1,
+                color: "bg-blue-600",
+                icon: "fa-bullseye",
+                title: "1. Fase de Planeación",
+                theory: "<p class='mb-2'><strong>Propósito:</strong> Establecer una base sólida para el proyecto antes de escribir código. Implica comprender profundamente el problema a resolver y los recursos disponibles.</p><ul class='list-disc pl-5 space-y-1 mt-2 text-sm'><li><strong>Alcance:</strong> Definir qué hará el sistema (gestionar 20 equipos localmente) y qué no hará (ej. sincronización en la nube, debido a la baja conectividad).</li><li><strong>Objetivos:</strong> Proveer un registro persistente y <em>offline</em> para los usuarios en San Pedro de la Montaña.</li><li><strong>Recursos y Cronograma:</strong> Determinar el uso del lenguaje C++, un entorno de desarrollo (ej. VS Code) y planificar los tiempos de entrega de la actividad.</li></ul>",
+                tasks: [
+                    { id: "t1_1", text: "Leer y comprender el problema prototípico: La comunidad de San Pedro de la Montaña y sus limitantes de conectividad." },
+                    { id: "t1_2", text: "Definir el objetivo técnico: Un sistema en C++ para gestionar el uso de equipos." },
+                    { id: "t1_3", text: "Identificar los requisitos de entrega: Archivo .cpp y Documento PDF." }
+                ]
+            },
+            {
+                id: 2,
+                color: "bg-indigo-600",
+                icon: "fa-magnifying-glass-chart",
+                title: "2. Fase de Análisis",
+                theory: "<p class='mb-2'><strong>Propósito:</strong> Detallar los requerimientos técnicos, funcionales y de datos exactos que el sistema debe cumplir basándose en el estado actual de la problemática.</p><ul class='list-disc pl-5 space-y-1 mt-2 text-sm'><li><strong>Requerimientos de Datos:</strong> Determinar con exactitud qué información se guardará (ID del equipo, hora, tipo de incidente, descripción).</li><li><strong>Modelado Estructural:</strong> Analizar la necesidad de usar un arreglo estático de tamaño 20 y un tipo de dato compuesto (<code>struct</code>) llamado <em>RegistroBitacora</em>.</li><li><strong>Persistencia Inicial:</strong> Analizar el requerimiento de que, al abrir el programa, este deba recuperar la información del archivo <code>bitacora.txt</code> si ya existe.</li></ul>",
+                tasks: [
+                    { id: "t2_1", text: "Definir la estructura base: Un arreglo unidimensional de tamaño 20 (para las 20 computadoras)." },
+                    { id: "t2_2", text: "Diseñar el struct 'RegistroBitacora' con los campos: id, hora, tipoIncidente, y descripcion." },
+                    { id: "t2_3", text: "Definir la persistencia (Lectura): El sistema debe verificar si existe 'bitacora.txt' al iniciar y recuperar sus datos." }
+                ]
+            },
+            {
+                id: 3,
+                color: "bg-purple-600",
+                icon: "fa-pen-ruler",
+                title: "3. Fase de Diseño",
+                theory: "<p class='mb-2'><strong>Propósito:</strong> Transformar los requerimientos abstractos en la arquitectura y lógica técnica del programa (es decir, planear el \"cómo\" se va a construir).</p><ul class='list-disc pl-5 space-y-1 mt-2 text-sm'><li><strong>Diseño Lógico:</strong> Creación del Diagrama de Flujo del sistema general mostrando el camino de ejecución y las tomas de decisiones (condicionales).</li><li><strong>Interfaz de Usuario:</strong> Diseñar la interacción del usuario mediante un menú de consola claro y ordenado (1. Consultar, 2. Modificar, 3. Registrar, etc.).</li><li><strong>Selección de Herramientas:</strong> Justificar el uso de ciertas librerías estándar como <code>&lt;fstream&gt;</code> para archivos y <code>&lt;string&gt;</code> para manipulación de textos.</li></ul>",
+                tasks: [
+                    { id: "t3_1", text: "Diseñar el Diagrama de Flujo del sistema general (se requerirá en el PDF)." },
+                    { id: "t3_2", text: "Diseñar la Interfaz de Usuario (Menú consola): 1. Consultar estado, 2. Modificar estado (libre/ocupada/mantenimiento), 3. Registrar incidentes, 4. Consultar historial, 5. Guardar y Salir." },
+                    { id: "t3_3", text: "Estructurar la lógica general del programa antes de codificar." }
+                ]
+            },
+            {
+                id: 4,
+                color: "bg-emerald-600",
+                icon: "fa-code",
+                title: "4. Fase de Desarrollo",
+                theory: "<p class='mb-2'><strong>Propósito:</strong> Es la fase de codificación pura. Aquí se traduce el diseño previamente establecido a instrucciones concretas en un lenguaje de programación.</p><ul class='list-disc pl-5 space-y-1 mt-2 text-sm'><li><strong>Construcción Estructural:</strong> Declarar y programar el arreglo de estructuras (<code>RegistroBitacora</code>) en la memoria principal del programa en C++.</li><li><strong>Lógica de Control:</strong> Implementar los ciclos (ej. <code>do-while</code>) para mantener el menú repitiéndose y condicionales (<code>switch/if</code>) para ejecutar la opción elegida por el usuario.</li><li><strong>Manejo de Archivos:</strong> Programar algorítmicamente la apertura, escritura (guardado de datos estructurado) y el cierre seguro del archivo <code>bitacora.txt</code>.</li></ul>",
+                tasks: [
+                    { id: "t4_1", text: "Implementar en C++ el arreglo de estructuras (RegistroBitacora) para almacenar datos en memoria." },
+                    { id: "t4_2", text: "Desarrollar la lógica del menú usando ciclos (while/do-while) y condicionales (switch/if)." },
+                    { id: "t4_3", text: "Implementar manejo de cadenas utilizando la librería <string>." },
+                    { id: "t4_4", text: "Programar la escritura y persistencia utilizando <fstream> para actualizar 'bitacora.txt'." }
+                ]
+            },
+            {
+                id: 5,
+                color: "bg-orange-500",
+                icon: "fa-vial-circle-check",
+                title: "5. Fase de Pruebas",
+                theory: "<p class='mb-2'><strong>Propósito:</strong> Asegurar la calidad del software encontrando errores (bugs), verificando que cumple los requerimientos y confirmando su robustez.</p><ul class='list-disc pl-5 space-y-1 mt-2 text-sm'><li><strong>Pruebas de Funcionalidad y Usabilidad:</strong> Ejecutar el código y navegar por todas las opciones del menú para verificar que los estados cambien correctamente y los incidentes se guarden.</li><li><strong>Pruebas de Persistencia:</strong> Simular el entorno real cerrando el programa abruptamente o de forma normal y volviéndolo a abrir para comprobar la lectura de <code>bitacora.txt</code>.</li><li><strong>Recolección de Evidencias:</strong> Tomar capturas de pantalla de los módulos funcionando (menú, registro, archivo de texto) para respaldar el reporte.</li></ul>",
+                tasks: [
+                    { id: "t5_1", text: "Probar el inicio del sistema: Verificar que recupere correctamente los datos si 'bitacora.txt' ya existe." },
+                    { id: "t5_2", text: "Verificar cada opción del menú funcionalmente." },
+                    { id: "t5_3", text: "Tomar capturas de pantalla de evidencia: Menú principal, Registro de incidentes y el archivo bitácora.txt abierto." }
+                ]
+            },
+            {
+                id: 6,
+                color: "bg-slate-700",
+                icon: "fa-file-pdf",
+                title: "6. Fase de Mantenimiento",
+                theory: "<p class='mb-2'><strong>Propósito:</strong> Documentar exhaustivamente el sistema, garantizar su comprensión técnica a futuro, y preparar estrategias de entrega y soporte.</p><ul class='list-disc pl-5 space-y-1 mt-2 text-sm'><li><strong>Documentación del Código:</strong> Explicar y justificar el funcionamiento de segmentos críticos (ej. cómo se gestiona el flujo del archivo con <code>fstream</code> y por qué se usan arreglos).</li><li><strong>Evaluación de la Solución:</strong> Analizar críticamente las limitaciones que tiene la solución actual y cómo podría mejorarse o escalar en un entorno con mejor conectividad en el futuro.</li><li><strong>Consolidación:</strong> Redactar manuales, conclusiones sobre aprendizajes adquiridos y empaquetar los archivos (.cpp y .pdf) para su entrega formal.</li></ul>",
+                tasks: [
+                    { id: "t6_1", text: "Redactar el documento PDF: Introducción, Integración de aprendizajes y Diseño de la solución." },
+                    { id: "t6_2", text: "Justificar decisiones técnicas (por qué se usaron arreglos, structs y manejo de archivos)." },
+                    { id: "t6_3", text: "Redactar el análisis del código (apertura, escritura y cierre de archivos usando fstream)." },
+                    { id: "t6_4", text: "Agregar capturas de pantalla, Evaluación, Conclusiones y al menos 3 Referencias APA 7ma ed." },
+                    { id: "t6_5", text: "Comprimir todo en un archivo .zip o .rar nombrado: LTIC2PRO8_PrimerApellido_PrimerNombre_AI" }
+                ]
+            }
+        ];
+
+        let currentPhaseIndex = 0;
+        
+        // Load state from local storage or initialize
+        const getCompletedTasks = () => JSON.parse(localStorage.getItem('sigConectaProgress')) || {};
+        const saveCompletedTasks = (state) => localStorage.setItem('sigConectaProgress', JSON.stringify(state));
+        
+        let completedTasks = getCompletedTasks();
+
+        const navContainer = document.getElementById('nav-container');
+        const tasksContainer = document.getElementById('tasks-container');
+        const btnPrev = document.getElementById('btn-prev');
+        const btnNext = document.getElementById('btn-next');
+
+        function updateProgress() {
+            let totalTasks = 0;
+            let completedCount = 0;
+            
+            phasesData.forEach(phase => {
+                totalTasks += phase.tasks.length;
+                phase.tasks.forEach(task => {
+                    if (completedTasks[task.id]) completedCount++;
+                });
+            });
+
+            const percentage = totalTasks === 0 ? 0 : Math.round((completedCount / totalTasks) * 100);
+            document.getElementById('progress-bar').style.width = `${percentage}%`;
+            document.getElementById('progress-text').textContent = `${percentage}% Completado`;
+        }
+
+        function renderNav() {
+            navContainer.innerHTML = '';
+            phasesData.forEach((phase, index) => {
+                const isActive = index === currentPhaseIndex;
+                
+                // Calculate phase specific progress
+                const phaseTasks = phase.tasks.length;
+                const phaseCompleted = phase.tasks.filter(t => completedTasks[t.id]).length;
+                const isFullyComplete = phaseTasks === phaseCompleted && phaseTasks > 0;
+
+                const btn = document.createElement('button');
+                btn.className = `phase-btn w-full text-left p-3 rounded-xl flex items-start gap-3 transition-all duration-200 border ${isActive ? 'active' : 'bg-white border-gray-100 hover:border-indigo-300 text-gray-600'}`;
+                btn.onclick = () => setPhase(index);
+
+                btn.innerHTML = `
+                    <div class="icon-bg flex-shrink-0 w-10 h-10 rounded-lg flex items-center justify-center ${isActive ? '' : 'bg-gray-100 text-gray-500'}">
+                        <i class="fa-solid ${phase.icon}"></i>
+                    </div>
+                    <div class="flex-1 min-w-0">
+                        <p class="font-bold text-sm truncate">${phase.title}</p>
+                        <p class="text-xs mt-1 ${isActive ? 'text-indigo-100' : 'text-gray-400'}">${phaseCompleted}/${phaseTasks} tareas</p>
+                    </div>
+                    ${isFullyComplete ? `<div class="mt-2 text-green-500"><i class="fa-solid fa-circle-check"></i></div>` : ''}
+                `;
+                navContainer.appendChild(btn);
+            });
+        }
+
+        function handleTaskToggle(taskId, checked) {
+            completedTasks[taskId] = checked;
+            saveCompletedTasks(completedTasks);
+            updateProgress();
+            renderNav(); // Update counts in sidebar
+        }
+
+        function renderPhaseContent() {
+            const phase = phasesData[currentPhaseIndex];
+            
+            // Update Banner
+            const banner = document.getElementById('phase-banner');
+            banner.className = `h-32 text-white p-8 flex items-end relative overflow-hidden transition-colors duration-500 ${phase.color}`;
+            document.getElementById('phase-title').textContent = phase.title;
+            document.getElementById('phase-banner-icon').className = `fa-solid ${phase.icon}`;
+            document.getElementById('phase-theory').innerHTML = phase.theory;
+
+            // Render Tasks
+            tasksContainer.innerHTML = '';
+            phase.tasks.forEach(task => {
+                const isChecked = completedTasks[task.id] || false;
+                
+                const taskDiv = document.createElement('label');
+                taskDiv.className = `flex items-start gap-3 p-4 rounded-xl border cursor-pointer transition-all ${isChecked ? 'bg-gray-50 border-gray-200' : 'bg-white border-gray-200 hover:border-indigo-300 shadow-sm'}`;
+                
+                taskDiv.innerHTML = `
+                    <div class="mt-0.5">
+                        <input type="checkbox" class="task-checkbox w-5 h-5 text-indigo-600 rounded border-gray-300 focus:ring-indigo-500 cursor-pointer" 
+                               ${isChecked ? 'checked' : ''} 
+                               onchange="handleTaskToggle('${task.id}', this.checked)">
+                    </div>
+                    <div class="text-sm font-medium transition-colors duration-200 select-none ${isChecked ? 'text-gray-400 line-through' : 'text-gray-700'}">
+                        ${task.text}
+                    </div>
+                `;
+                tasksContainer.appendChild(taskDiv);
+            });
+
+            // Update Buttons
+            btnPrev.style.visibility = currentPhaseIndex === 0 ? 'hidden' : 'visible';
+            
+            if (currentPhaseIndex === phasesData.length - 1) {
+                btnNext.innerHTML = 'Finalizar Proyecto <i class="fa-solid fa-flag-checkered ml-2"></i>';
+                btnNext.className = "px-4 py-2 text-sm font-medium text-white bg-green-600 hover:bg-green-700 rounded-lg transition-colors shadow-sm";
+                btnNext.onclick = () => alert("¡Excelente trabajo! Asegúrate de subir tu archivo .zip a la plataforma de la Universidad Rosario Castellanos.");
+            } else {
+                btnNext.innerHTML = 'Siguiente Fase <i class="fa-solid fa-arrow-right ml-2"></i>';
+                btnNext.className = "px-4 py-2 text-sm font-medium text-white bg-indigo-600 hover:bg-indigo-700 rounded-lg transition-colors shadow-sm";
+                btnNext.onclick = () => setPhase(currentPhaseIndex + 1);
+            }
+        }
+
+        function setPhase(index) {
+            currentPhaseIndex = index;
+            renderNav();
+            renderPhaseContent();
+            // Scroll content to top
+            document.getElementById('content-card').scrollIntoView({ behavior: 'smooth', block: 'start' });
+        }
+
+        // Setup event listeners for prev button
+        btnPrev.onclick = () => setPhase(currentPhaseIndex - 1);
+
+        // Initialize App
+        updateProgress();
+        setPhase(0);
+
+    </script>
+</body>
+</html>
