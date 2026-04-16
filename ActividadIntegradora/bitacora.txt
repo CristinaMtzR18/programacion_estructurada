@@ -1,0 +1,27 @@
+EQUIPOS
+0
+0
+0
+0
+0
+0
+1
+0
+0
+0
+0
+0
+0
+1
+0
+0
+1
+0
+0
+2
+VISITANTES 2
+23|Cris|14|45|Universidad|7
+67|Cris dos|16|78|Bachillerato|17
+INCIDENTES 2
+5|13|soporte|el equipo hizo boom
+18|soporte|soporte|tambien hizo boom
