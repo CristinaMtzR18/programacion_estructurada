@@ -1,0 +1,24 @@
+EQUIPOS
+0
+0
+2
+0
+1
+0
+0
+0
+0
+0
+0
+0
+0
+0
+0
+0
+0
+0
+0
+0
+VISITANTES 1
+34|Cris|13|34|Universidad|5
+INCIDENTES 0
