@@ -1,3 +1,4 @@
+//Comentairos
 #include <iostream>
 #include <limits>
 #include "equipos.h"
